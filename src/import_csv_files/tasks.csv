@@ -1,0 +1,7 @@
+Title,ParentTask,MaxXP
+C3_SimpleBashUtils,,350
+C4_s21_math,C3_SimpleBashUtils,300
+C7_SmartCalc_v1.0,C4_s21_math,750
+C8_3DViewer_v1.0,C7_SmartCalc_v1.0,1040
+CPP1_s21_matrixplus,C8_3DViewer_v1.0,300
+D01_Linux,C3_SimpleBashUtils,300

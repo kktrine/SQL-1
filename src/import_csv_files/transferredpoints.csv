@@ -1,0 +1,15 @@
+ID,CheckingPeer,CheckedPeer,PointsAmount
+1,genevaja,boomergo,1
+2,hankmagg,genevaja,2
+3,boomergo,reverend,2
+4,reverend,boomergo,2
+5,reverend,jacquelc,2
+6,reverend,hankmagg,1
+7,jacquelc,boomergo,1
+8,boomergo,genevaja,1
+9,hankmagg,boomergo,1
+10,genevaja,reverend,1
+11,jacquelc,reverend,1
+12,genevaja,hankmagg,1
+13,reverend,genevaja,1
+14,boomergo,hankmagg,1
