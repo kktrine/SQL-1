@@ -1,5 +1,5 @@
--- Part 3 task 1 
-CREATE OR REPLACE FUNCTION s21_readable_transferredpoints() RETURNS TABLE (
+-- Part 3 task 1
+CREATE OR REPLACE FUNCTION readable_transferredpoints() RETURNS TABLE (
 		Peer1 VARCHAR,
 		Peer2 VARCHAR,
 		PointsAmount integer
@@ -29,10 +29,10 @@ ORDER BY tmp.Peer1,
 $$ LANGUAGE SQL;
 -- test
 -- SELECT *
--- FROM s21_readable_transferredpoints();
+-- FROM readable_transferredpoints();
 --
 -- Part 3 task 2
-CREATE OR REPLACE FUNCTION s21_peer_task_xp() RETURNS --
+CREATE OR REPLACE FUNCTION peer_task_xp() RETURNS --
  TABLE (peer VARCHAR, task VARCHAR, xp bigint) AS $$
 SELECT peer,
 	task,
@@ -44,10 +44,10 @@ WHERE state = 'Success';
 $$ LANGUAGE SQL;
 --test
 -- SELECT *
--- FROM s21_peer_task_xp();
+-- FROM peer_task_xp();
 --
 -- Part 3 task 3
-CREATE OR REPLACE FUNCTION s21_peer_not_exiting(date_arg DATE) RETURNS --
+CREATE OR REPLACE FUNCTION peer_not_exiting(date_arg DATE) RETURNS --
  TABLE (peer VARCHAR) AS $$
 SELECT peer
 FROM timetracking
@@ -60,12 +60,12 @@ WHERE date = date_arg
 	AND state = 2 --
    $$ LANGUAGE SQL;
 --tests
--- SELECT * FROM s21_peer_not_exiting('2023-02-01');
--- SELECT * FROM s21_peer_not_exiting('2022-11-30');
+-- SELECT * FROM peer_not_exiting('2023-02-01');
+-- SELECT * FROM peer_not_exiting('2022-11-30');
 --
 -- Part 3 task 4
-CREATE OR REPLACE PROCEDURE s21_points_balance(rc refcursor) LANGUAGE plpgsql AS $$ 
-BEGIN OPEN rc FOR 
+CREATE OR REPLACE PROCEDURE points_balance(rc refcursor) LANGUAGE plpgsql AS $$
+BEGIN OPEN rc FOR
 	WITH tmp AS (
 		(
 			SELECT t.checkingpeer AS Peer1,
@@ -100,28 +100,28 @@ END;
 $$;
 -- test
 -- BEGIN;
--- CALL s21_points_balance('rc');
+-- CALL points_balance('rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 --
--- Part 3 task 5  
-CREATE OR REPLACE PROCEDURE s21_points_balance_with_function(rc refcursor) LANGUAGE plpgsql AS $$ 
+-- Part 3 task 5
+CREATE OR REPLACE PROCEDURE points_balance_with_function(rc refcursor) LANGUAGE plpgsql AS $$
 BEGIN OPEN rc FOR
 SELECT tmp.Peer1 AS Peer,
 	SUM(tmp.PointsAmount) AS PointsAmount
-FROM s21_readable_transferredpoints() AS tmp
+FROM readable_transferredpoints() AS tmp
 GROUP BY tmp.Peer1
 ORDER BY SUM(tmp.PointsAmount) DESC;
 END;
 $$;
 -- test
 -- BEGIN;
--- CALL s21_points_balance_with_function('rc');
+-- CALL points_balance_with_function('rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 --
 -- Part 3 task 6
-CREATE OR REPLACE FUNCTION s21_most_frequent_task_for_each_day() --
+CREATE OR REPLACE FUNCTION most_frequent_task_for_each_day() --
  RETURNS TABLE (day DATE, task VARCHAR) AS $$ BEGIN RETURN QUERY
 	WITH tmp AS (
 		SELECT c.date,
@@ -145,7 +145,7 @@ END;
 $$ LANGUAGE plpgsql;
 -- test
 -- SELECT *
--- FROM s21_most_frequent_task_for_each_day();
+-- FROM most_frequent_task_for_each_day();
 --
 -- Part 3 task 7
 CREATE OR REPLACE PROCEDURE my_end_block(block refcursor) AS $$ BEGIN OPEN block FOR
@@ -182,7 +182,7 @@ $$ LANGUAGE plpgsql;
 -- COMMIT;
 --
 -- Part 3 Task 8
-CREATE OR REPLACE FUNCTION s21_good_peer() RETURNS TABLE (peer VARCHAR, recommendedpeer VARCHAR) AS $$ BEGIN RETURN QUERY with friend_table as (
+CREATE OR REPLACE FUNCTION good_peer() RETURNS TABLE (peer VARCHAR, recommendedpeer VARCHAR) AS $$ BEGIN RETURN QUERY with friend_table as (
 		SELECT nickname,
 			peer1 as friend
 		FROM peers
@@ -219,7 +219,7 @@ END;
 $$ LANGUAGE plpgsql;
 -- test
 -- SELECT *
--- FROM s21_good_peer();
+-- FROM good_peer();
 --
 -- Part 3 task 9
 CREATE OR REPLACE PROCEDURE my_begin_block(block1 refcursor, block2 refcursor) AS $$ BEGIN OPEN block1 FOR -- тело процедуры
@@ -413,15 +413,15 @@ $$ LANGUAGE plpgsql;
 -- BEGIN;
 -- CALL my_execute_tasks(
 -- 	'C3_SimpleBashUtils',
--- 	'C4_s21_math',
+-- 	'C4_math',
 -- 	'C7_SmartCalc_v1.0'
 -- );
 -- FETCH ALL IN "C3_SimpleBashUtils";
 -- COMMIT;
 --
 -- Part 3 task 12
-CREATE OR REPLACE PROCEDURE s21_number_of_preceding_tasks(rc refcursor) LANGUAGE plpgsql AS $$ 
-BEGIN OPEN rc FOR 
+CREATE OR REPLACE PROCEDURE number_of_preceding_tasks(rc refcursor) LANGUAGE plpgsql AS $$
+BEGIN OPEN rc FOR
 	WITH RECURSIVE r (title, parenttask, PrevCount) AS (
 		(
 			SELECT title,
@@ -446,13 +446,13 @@ END;
 $$;
 -- test
 -- BEGIN;
--- CALL s21_number_of_preceding_tasks('rc');
+-- CALL number_of_preceding_tasks('rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 --
 -- Part 3 Task 13
-CREATE OR REPLACE PROCEDURE s21_lucky_days(lucky_data refcursor, N int) AS $$ 
-BEGIN OPEN lucky_data FOR 
+CREATE OR REPLACE PROCEDURE lucky_days(lucky_data refcursor, N int) AS $$
+BEGIN OPEN lucky_data FOR
 	WITH cte_date AS(
 		SELECT c1.date,
 			c1.time,
@@ -501,13 +501,13 @@ WHERE max_success_count >= N;
 END;
 $$ LANGUAGE plpgsql;
 -- test
--- CALL s21_lucky_days('tmp', 1);
+-- CALL lucky_days('tmp', 1);
 -- FETCH ALL
 -- FROM "tmp";
 -- CLOSE "tmp";
 --
 -- Part 3 Task 14
-CREATE OR REPLACE FUNCTION s21_peer_with_max_xp() --
+CREATE OR REPLACE FUNCTION peer_with_max_xp() --
 RETURNS TABLE (peer VARCHAR, xpamount bigint) AS $$
 	BEGIN RETURN QUERY with latest_attempts as(
 		SELECT max(x1.id) as id,
@@ -535,15 +535,15 @@ END;
 $$ LANGUAGE plpgsql;
 -- test
 -- SELECT *
--- FROM s21_peer_with_max_xp();
+-- FROM peer_with_max_xp();
 --
--- Part 3 task 15 
-CREATE OR REPLACE PROCEDURE s21_frequent_visitors(
+-- Part 3 task 15
+CREATE OR REPLACE PROCEDURE frequent_visitors(
 		visit_time time,
 		visit_count integer,
 		rc refcursor
-	) LANGUAGE plpgsql AS $$ 
-BEGIN OPEN rc FOR 
+	) LANGUAGE plpgsql AS $$
+BEGIN OPEN rc FOR
 	WITH tmp AS (
 		SELECT peer,
 			count(*) AS C
@@ -562,27 +562,27 @@ END;
 $$;
 -- test
 -- BEGIN;
--- CALL s21_frequent_visitors('18:00:00', 2, 'rc');
+-- CALL frequent_visitors('18:00:00', 2, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 
 -- BEGIN;
--- CALL s21_frequent_visitors('15:00:00', 1, 'rc');
+-- CALL frequent_visitors('15:00:00', 1, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 
 -- BEGIN;
--- CALL s21_frequent_visitors('11:00:00', 1, 'rc');
+-- CALL frequent_visitors('11:00:00', 1, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 --
--- Part 3 task 16 
-CREATE OR REPLACE PROCEDURE s21_frequent_leavers(
+-- Part 3 task 16
+CREATE OR REPLACE PROCEDURE frequent_leavers(
 		days_count integer,
 		visit_count integer,
 		rc refcursor
-	) LANGUAGE plpgsql AS $$ 
-BEGIN OPEN rc FOR 
+	) LANGUAGE plpgsql AS $$
+BEGIN OPEN rc FOR
 	WITH tmp AS (
 		SELECT peer,
 			count(*) AS C
@@ -602,23 +602,23 @@ END;
 $$;
 -- tests
 -- BEGIN;
--- CALL s21_frequent_leavers(100, 1, 'rc');
+-- CALL frequent_leavers(100, 1, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 
 -- BEGIN;
--- CALL s21_frequent_leavers(365, 1, 'rc');
+-- CALL frequent_leavers(365, 1, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 
 -- BEGIN;
--- CALL s21_frequent_leavers(365, 4, 'rc');
+-- CALL frequent_leavers(365, 4, 'rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;
 --
--- Part 3 task 17 
-CREATE OR REPLACE PROCEDURE s21_early_bday_visitors(rc refcursor) LANGUAGE plpgsql AS $$ 
-BEGIN OPEN rc FOR 
+-- Part 3 task 17
+CREATE OR REPLACE PROCEDURE early_bday_visitors(rc refcursor) LANGUAGE plpgsql AS $$
+BEGIN OPEN rc FOR
 	WITH tmp AS (
 		SELECT m.month_id,
 			tt.peer,
@@ -695,6 +695,6 @@ END;
 $$;
 -- test
 -- BEGIN;
--- CALL s21_early_bday_visitors('rc');
+-- CALL early_bday_visitors('rc');
 -- FETCH ALL IN "rc";
 -- COMMIT;

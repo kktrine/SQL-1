@@ -1,5 +1,5 @@
 -- №2.1
-CREATE OR REPLACE PROCEDURE s21_add_p2p_check (
+CREATE OR REPLACE PROCEDURE add_p2p_check (
     peer_nick VARCHAR(25),
     checking_peer_nick VARCHAR(25),
     task_arg VARCHAR(25),
@@ -71,29 +71,29 @@ $$ LANGUAGE plpgsql;
 -- же пира. Тоесть пир с первой попытки не сдал и при повторной
 -- проверки нарвался на того же пира кому не смог сдать
 --
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'boomergo',
 --   'genevaja',
---   'CPP1_s21_matrixplus',
+--   'CPP1_matrixplus',
 --   'Start',
 --   make_time(8, 30, 0)
 -- );
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'boomergo',
 --   'genevaja',
---   'CPP1_s21_matrixplus',
+--   'CPP1_matrixplus',
 --   'Success',
 --   make_time(9, 00, 0)
 -- );
 -- -- Обычная проверка
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'jacquelc',
 --   'reverend',
 --   'D01_Linux',
 --   'Start',
 --   make_time(13, 00, 0)
 -- );
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'jacquelc',
 --   'reverend',
 --   'D01_Linux',
@@ -102,14 +102,14 @@ $$ LANGUAGE plpgsql;
 -- );
 -- -- Попытка внести проверки одних и тех же пиров,
 -- -- только на разные проекты в один день
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'boomergo',
 --   'genevaja',
 --   'C7_SmartCalc_v1.0',
 --   'Start',
 --   make_time(13, 30, 0)
 -- );
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'boomergo',
 --   'genevaja',
 --   'C7_SmartCalc_v1.0',
@@ -162,14 +162,14 @@ VALUES (
         p2p.time DESC
       LIMIT 1
     ), state_check, time_check
-  ); 
+  );
 END IF;
 END;
 $$ LANGUAGE plpgsql;
 -- -- test
 -- call proc_add_checking_by_Verter(
 --   'boomergo',
---   'CPP1_s21_matrixplus',
+--   'CPP1_matrixplus',
 --   'Start',
 --   make_time(11, 00, 0)
 -- );
@@ -187,8 +187,8 @@ $$ LANGUAGE plpgsql;
 -- );
 --
 -- #2.3
-CREATE OR REPLACE FUNCTION fnc_TransferredPoints_update() RETURNS TRIGGER AS $$ 
-BEGIN IF (NEW.state = 'Start') THEN 
+CREATE OR REPLACE FUNCTION fnc_TransferredPoints_update() RETURNS TRIGGER AS $$
+BEGIN IF (NEW.state = 'Start') THEN
 IF (
     EXISTS(
       SELECT *
@@ -239,21 +239,21 @@ AFTER
 INSERT ON p2p FOR EACH ROW EXECUTE PROCEDURE fnc_TransferredPoints_update();
 
 --tests
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'reverend',
 --   'boomergo',
---   'CPP1_s21_matrixplus',
+--   'CPP1_matrixplus',
 --   'Start',
 --   make_time(8, 30, 0)
 -- );
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'reverend',
 --   'boomergo',
---   'CPP1_s21_matrixplus',
+--   'CPP1_matrixplus',
 --   'Success',
 --   make_time(9, 00, 0)
 -- );
--- call s21_add_p2p_check(
+-- call add_p2p_check(
 --   'hankmagg',
 --   'boomergo',
 --   'D01_Linux',
@@ -262,7 +262,7 @@ INSERT ON p2p FOR EACH ROW EXECUTE PROCEDURE fnc_TransferredPoints_update();
 -- );
 --
 -- #2.4
-CREATE OR REPLACE FUNCTION s21_XP_insert_trigger_fun() RETURNS TRIGGER AS $$ BEGIN --
+CREATE OR REPLACE FUNCTION XP_insert_trigger_fun() RETURNS TRIGGER AS $$ BEGIN --
 IF NEW.XPAmount > (
 SELECT MaxXP
 FROM checks c
@@ -283,8 +283,8 @@ END;
 $$ LANGUAGE plpgsql;
 --
 --
-CREATE OR REPLACE TRIGGER s21_XP_insert_trigger BEFORE
-INSERT ON XP FOR EACH ROW EXECUTE FUNCTION s21_XP_insert_trigger_fun();
+CREATE OR REPLACE TRIGGER XP_insert_trigger BEFORE
+INSERT ON XP FOR EACH ROW EXECUTE FUNCTION XP_insert_trigger_fun();
 --
 --
 -- tests

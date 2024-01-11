@@ -1,5 +1,5 @@
 -- Part 4 Task 1
-CREATE OR REPLACE PROCEDURE s21_drop_tables_starting_with_name(p_table_name text) LANGUAGE plpgsql AS $$
+CREATE OR REPLACE PROCEDURE drop_tables_starting_with_name(p_table_name text) LANGUAGE plpgsql AS $$
 DECLARE table_rec record;
 BEGIN FOR table_rec IN (
   SELECT tablename
@@ -31,7 +31,7 @@ $$;
 --
 -- Общая идея процедуры - упрощение процесса удаления нескольких таблиц с помощью одной команды.
 -- Part 4 Task 2
-CREATE OR REPLACE PROCEDURE s21_get_scalar_functions(OUT function_count integer) AS $$
+CREATE OR REPLACE PROCEDURE get_scalar_functions(OUT function_count integer) AS $$
 DECLARE function_details text := ' ';
 frec record;
 BEGIN function_count := 0;
@@ -68,9 +68,9 @@ function_details;
 END;
 $$ LANGUAGE plpgsql;
 -- test
--- call s21_get_scalar_functions(1);
+-- call get_scalar_functions(1);
 -- Part 4 Task 3
-CREATE OR REPLACE PROCEDURE s21_get_delete_triggers(OUT trigger_count integer) AS $$
+CREATE OR REPLACE PROCEDURE get_delete_triggers(OUT trigger_count integer) AS $$
 DECLARE trigger_rec record;
 BEGIN trigger_count := 0;
 FOR trigger_rec IN (
@@ -91,4 +91,4 @@ END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 -- test
--- call s21_get_delete_triggers(0);
+-- call get_delete_triggers(0);

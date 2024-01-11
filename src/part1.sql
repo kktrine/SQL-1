@@ -13,34 +13,34 @@ drop type if exists check_status CASCADE;
 DROP PROCEDURE IF exists import_csv_to_db(text);
 DROP PROCEDURE IF exists export_csv_from_db(text);
 -- Part 2 delete
-DROP PROCEDURE IF exists s21_add_p2p_check CASCADE;
+DROP PROCEDURE IF exists add_p2p_check CASCADE;
 DROP PROCEDURE IF exists proc_add_checking_by_Verter CASCADE;
 DROP FUNCTION IF exists fnc_TransferredPoints_update CASCADE;
-DROP FUNCTION IF exists s21_XP_insert_trigger_fun CASCADE;
+DROP FUNCTION IF exists XP_insert_trigger_fun CASCADE;
 DROP TRIGGER IF exists trg_TransferredPoints_update on p2p CASCADE;
-DROP TRIGGER IF exists s21_XP_insert_trigger_fun on XP CASCADE;
+DROP TRIGGER IF exists XP_insert_trigger_fun on XP CASCADE;
 -- Part 3 delete
-DROP FUNCTION IF EXISTS s21_readable_transferredpoints;
-DROP FUNCTION IF EXISTS s21_peer_task_xp;
-DROP FUNCTION IF EXISTS s21_peer_not_exiting;
-DROP PROCEDURE IF EXISTS s21_points_balance;
-DROP PROCEDURE IF EXISTS s21_points_balance_with_function;
-DROP FUNCTION IF EXISTS s21_most_frequent_task_for_each_day;
+DROP FUNCTION IF EXISTS readable_transferredpoints;
+DROP FUNCTION IF EXISTS peer_task_xp;
+DROP FUNCTION IF EXISTS peer_not_exiting;
+DROP PROCEDURE IF EXISTS points_balance;
+DROP PROCEDURE IF EXISTS points_balance_with_function;
+DROP FUNCTION IF EXISTS most_frequent_task_for_each_day;
 DROP PROCEDURE IF EXISTS my_end_block;
-DROP FUNCTION IF EXISTS s21_good_peer;
+DROP FUNCTION IF EXISTS good_peer;
 DROP PROCEDURE IF exists my_begin_block(refcursor, refcursor);
 DROP FUNCTION IF exists fnc_success_procent_birthday();
 DROP PROCEDURE IF exists my_execute_tasks(refcursor, refcursor, refcursor);
-DROP PROCEDURE IF EXISTS s21_number_of_preceding_tasks;
-DROP PROCEDURE IF EXISTS s21_lucky_days;
-DROP FUNCTION IF EXISTS s21_peer_with_max_xp;
-DROP PROCEDURE IF EXISTS s21_frequent_visitors;
-DROP PROCEDURE IF EXISTS s21_frequent_leavers;
-DROP PROCEDURE IF EXISTS s21_early_bday_visitors;
+DROP PROCEDURE IF EXISTS number_of_preceding_tasks;
+DROP PROCEDURE IF EXISTS lucky_days;
+DROP FUNCTION IF EXISTS peer_with_max_xp;
+DROP PROCEDURE IF EXISTS frequent_visitors;
+DROP PROCEDURE IF EXISTS frequent_leavers;
+DROP PROCEDURE IF EXISTS early_bday_visitors;
 -- Part 4 delete
-DROP PROCEDURE IF EXISTS s21_drop_tables_starting_with_name;
-DROP PROCEDURE IF EXISTS s21_get_scalar_functions;
-DROP PROCEDURE IF EXISTS s21_get_delete_triggers;
+DROP PROCEDURE IF EXISTS drop_tables_starting_with_name;
+DROP PROCEDURE IF EXISTS get_scalar_functions;
+DROP PROCEDURE IF EXISTS get_delete_triggers;
 -- Создание таблицы peers
 create table Peers (
     Nickname varchar primary key,
